@@ -1,0 +1,16 @@
+from sentence_transformers import SentenceTransformer
+from vector_store import VectorStore
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+store = VectorStore()
+
+store.load()
+
+def answer_query(query):
+
+    query_embedding = model.encode([query])[0]
+
+    result = store.search(query_embedding)
+
+    return result
