@@ -1,0 +1,23 @@
+from sentence_transformers import SentenceTransformer
+from vector_store import VectorStore
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+store = VectorStore()
+
+docs = []
+
+with open("../data/finance_docs.txt") as f:
+    for line in f:
+
+        docs.append(line.strip())
+
+embeddings = model.encode(docs)
+
+for doc, emb in zip(docs, embeddings):
+
+    store.add(doc, emb)
+
+store.save()
+
+print("Documents embedded successfully")
