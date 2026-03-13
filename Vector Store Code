@@ -1,0 +1,42 @@
+import json
+import numpy as np
+
+class VectorStore:
+
+    def __init__(self):
+        self.vectors = []
+
+    def add(self, text, embedding):
+
+        self.vectors.append({
+            "text": text,
+            "embedding": embedding.tolist()
+        })
+
+    def save(self):
+
+        with open("vector_store.json","w") as f:
+            json.dump(self.vectors,f)
+
+    def load(self):
+
+        with open("vector_store.json") as f:
+            self.vectors = json.load(f)
+
+    def search(self, query_embedding):
+
+        best_score = -1
+        best_doc = ""
+
+        for item in self.vectors:
+
+            emb = np.array(item["embedding"])
+
+            score = np.dot(query_embedding, emb)
+
+            if score > best_score:
+
+                best_score = score
+                best_doc = item["text"]
+
+        return best_doc
