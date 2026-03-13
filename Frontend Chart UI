@@ -1,0 +1,18 @@
+import streamlit as st
+import sys
+
+sys.path.append("../backend")
+
+from rag_pipeline import answer_query
+
+st.title("AI Financial Research Assistant")
+
+query = st.text_input("Ask about stocks")
+
+if query:
+
+    result = answer_query(query)
+
+    st.write("Relevant Information:")
+
+    st.write(result)
